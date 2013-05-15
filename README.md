@@ -1,9 +1,9 @@
 timetrack
 =========
 
-*timetrack* pulls the title of the active X window every 5 secons and records information to a csv file. The data recorded is
+_timetrack_ pulls the title of the active X window every 5 secons and records information to a csv file. The data recorded is
 
-	_WM_CLIENT_MACHINE(STRING)_ as the hostname
-	_WM_CLASS(STRING)_ as the application class
-	_NET_WM_NAME(UTF8_STRING) as the window title
+	*WM_CLIENT_MACHINE(STRING)* as the hostname
+	*WM_CLASS(STRING)*as the application class
+	*NET_WM_NAME(UTF8_STRING)* as the window title
 
