@@ -12,7 +12,6 @@ class CheckActiveWindow (threading.Thread):
 		def __init__(self):
 				self.cur = None
 				self.conn = None
-				self.stopped = False
 				self.screensaver = False
 				self.new = dict()
 				self.last = dict()
@@ -66,6 +65,7 @@ class CheckActiveWindow (threading.Thread):
 						name, var = line.partition("=")[::2]
 						keyvalues[name.strip()] = var
 
+				# try to extract useful data
 				try:
 						self.new['hostname'] = keyvalues['WM_CLIENT_MACHINE(STRING)'].split('"')[1::2][0].decode('utf-8')
 						self.new['appclass'] =  keyvalues['WM_CLASS(STRING)'].split(',')[1].split('"')[1::2][0].decode('utf-8')
@@ -77,22 +77,23 @@ class CheckActiveWindow (threading.Thread):
 						self.new['appclass'] = ""
 						return
 
+				# set "idle" value when screensaver is active
 				if not self.screensaver:
-						self.new['appclass'] = "screensaver"
-						self.new['title'] = "screensaver"
+						self.new['appclass'] = "idle"
+						self.new['title'] = "idle"
 
+				# check duplicates and store data
 				if not set(self.new.values()).issubset(self.last.values()):
 						self.last['hostname'] = self.new['hostname']
 						self.last['appclass'] = self.new['appclass']
 						self.last['title'] = self.new['title']
-
 
 						self.cur.execute("""INSERT INTO records VALUES (?,?,?,?)""", (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), self.last['hostname'], self.last['appclass'], self.last['title']))
 						self.conn.commit()
 
 		def run(self):
 				self.initdb()
-				while not self.stopped:
+				while True:
 						self.check()
 						time.sleep(5)
 
