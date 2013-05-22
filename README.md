@@ -18,6 +18,6 @@ I use it to track my working hours in all my *digital* tasks.
 todo
 ====
 
-* Add encription
+* Add encryption
 * Add cloud support to track all my desktops
 * Build an amazing html5 user interface
